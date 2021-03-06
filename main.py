@@ -107,7 +107,7 @@ def Reagir(*args):
     global Tokens
     for Token in Tokens:
         try:
-            urllib.request.urlopen(Request("https://discord.com/api/v8/channels/{}/messages/{}/reactions/{}/%40me".format(args[0][0].get(), args[0][1].get(), args[0][2].get()),data="".encode("utf-8"), headers={"authorization": Token.replace("\n",""), "content-type": "application/json","user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"},method="PUT"))
+            urllib.request.urlopen(Request("https://discord.com/api/v8/channels/{}/messages/{}/reactions/{}/%40me".format(args[0][0].get(), args[0][1].get(), str(args[0][2].get().encode()).replace("b'\\x","%").replace("\\x","%").replace("'","")),data="".encode("utf-8"), headers={"authorization": Token.replace("\n",""), "content-type": "application/json","user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"},method="PUT"))
         except:
             pass
 #------------------------------------
@@ -118,7 +118,7 @@ def Reacter(*args):
     if(args[0][1].get()==1):
         LL = AddLabel(args[0][0],"Message ID")
         NL = AddTextBox(args[0][0],Entry4)
-        LL2 = AddLabel(args[0][0],"Reaction ID")
+        LL2 = AddLabel(args[0][0],"Emoji(https://pt.piliapp.com/emoji/list/)")
         NL2 = AddTextBox(args[0][0],Entry5)
         BL = AddButton(args[0][0],"Reagir",Reagir,Entry2,NL,NL2)
     else:
@@ -128,6 +128,9 @@ def Reacter(*args):
         Label.destroy(self=LL2)
         Text.destroy(self=NL2)
 #-----------------------------------------------------
+
+def Quit(*args):
+    exit()
 
 Application()
 
@@ -150,6 +153,7 @@ AddLabel(App,"Chat para Floodar")
 AddTextBox(App,Entry2)
 AddButton(App,"Mandar",StartFlood,Entry2,Entry1)
 AddButton(App,"Stop",StopFlood)
+AddButton(App,"Quit",Quit,App)
 AddCheckBox(App,"Reagir",Test,Reacter,App,Test,Entry2,Entry4,Entry5)
 #-------------------------
 
